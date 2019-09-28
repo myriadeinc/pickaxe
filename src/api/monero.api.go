@@ -1,8 +1,9 @@
-package MoneroApi
+package Apis
 
 import (
 	"fmt"
 	"github.com/ybbus/jsonrpc"
+	"github.com/myriadeinc/pickaxe/src/util"
 )
 
 type Request struct {
@@ -35,6 +36,7 @@ func GetJobTemplate(reserveSize int, address string) (*JobTemplateResponse) {
 		// error handling goes here e.g. network / http error
 	}
 	result.GetObject(&response)
-	fmt.Println(response)
+
+	Logger.Logger.Info(response)
 	return response
 }

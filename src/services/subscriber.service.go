@@ -1,18 +1,23 @@
-package SubscriberService
+package Services
 
 import (
 	"github.com/Kairi/godash"
 )
 
 type Subscriber struct {
-	Hostname		string
+	Webhook		string
 }
+
 type notify func(Subscriber) bool
 
 var subscribers []*Subscriber
 
-func Subscribe(hostname string) () {
-		append(subscribers, &Subscriber{hostname})
+func InitSubscriberService() (*SubscriberService) {
+	
+}
+
+func Subscribe(webhook string) () {
+		append(subscribers, &Subscriber{webhook})
 }
 
 func Notify(fn notify) ([]bool) {

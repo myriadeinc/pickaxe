@@ -40,3 +40,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/Kairi/godash"
+
+[[constraint]]
+  name = "github.com/gorilla/mux"
+  version = "1.7.3"

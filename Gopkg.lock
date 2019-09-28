@@ -18,6 +18,14 @@
   revision = "8815b5fdce8c649679da0123c957d4b5e4b6f8ca"
 
 [[projects]]
+  digest = "1:cbec35fe4d5a4fba369a656a8cd65e244ea2c743007d8f6c1ccb132acf9d1296"
+  name = "github.com/gorilla/mux"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "00bdffe0f3c77e27d2cf6f5c70232a2d3e4d9c15"
+  version = "v1.7.3"
+
+[[projects]]
   digest = "1:6cfa5e6e198f3394125f93616c2331233e982a3cea36b44f736aa5913710acdc"
   name = "github.com/ybbus/jsonrpc"
   packages = ["."]
@@ -31,6 +39,7 @@
   input-imports = [
     "github.com/Kairi/godash",
     "github.com/bhoriuchi/go-bunyan/bunyan",
+    "github.com/gorilla/mux",
     "github.com/ybbus/jsonrpc",
   ]
   solver-name = "gps-cdcl"

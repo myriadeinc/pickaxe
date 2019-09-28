@@ -8,4 +8,4 @@ WORKDIR /go/src/github.com/myriadeinc/pickaxe/
 
 COPY . .
 
-ENTRYPOINT dep ensure && CompileDaemon -log-prefix=false -build="go build -o ./build/pickaxe ./src/main.go" -command="./build/pickaxe" | logdna-stdin --hostname myriade.local --log-file-name pickaxe.local
+ENTRYPOINT dep ensure && CompileDaemon -build="go build -o ./build/pickaxe ./src/main.go" -command="./build/pickaxe"
