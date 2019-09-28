@@ -2,6 +2,14 @@
 
 
 [[projects]]
+  branch = "master"
+  digest = "1:71dacf71b3d9cdad5751d42650197769efb31eaa64d8129e03f7182bdace7d65"
+  name = "github.com/bhoriuchi/go-bunyan"
+  packages = ["bunyan"]
+  pruneopts = "UT"
+  revision = "8815b5fdce8c649679da0123c957d4b5e4b6f8ca"
+
+[[projects]]
   digest = "1:6cfa5e6e198f3394125f93616c2331233e982a3cea36b44f736aa5913710acdc"
   name = "github.com/ybbus/jsonrpc"
   packages = ["."]
@@ -12,6 +20,9 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = ["github.com/ybbus/jsonrpc"]
+  input-imports = [
+    "github.com/bhoriuchi/go-bunyan/bunyan",
+    "github.com/ybbus/jsonrpc",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -1,6 +1,7 @@
-package monero_api
+package MoneroAPI
 
 import (
+	"fmt"
 	"github.com/ybbus/jsonrpc"
 )
 
@@ -10,7 +11,7 @@ type Request struct {
 }
 
 type JobTemplateResponse struct {
-	Ok 					 	 bool
+	Ok 					 	 bool		`json:ok`
 	Difficulty     int64  `json:"difficulty"`
 	Height         int64  `json:"height"`
 	Blob           string `json:"blocktemplate_blob"`
@@ -18,17 +19,20 @@ type JobTemplateResponse struct {
 	PrevHash       string `json:"prev_hash"`
 }
 
-var rpcClient := jsonrpc.NewClient("http://0.0.0.0:8080/rpc")
+func Init(url string) (jsonrpc.RPCClient) {
+	return jsonrpc.NewClient(url)
+}
 
-func GetJobTemplate(reserveSize int, address string) (*JobTemplateResponse) {
+func GetJobTemplate(rpcClient jsonrpc.RPCClient, reserveSize int, address string) (*JobTemplateResponse) {
 	result, err := rpcClient.Call("getblocktemplate", &Request{address, reserveSize})
-	JobTemplateResponse* response;
-	if err != nil || response.Error != nil {
+	var response *JobTemplateResponse
+	if err != nil || result.Error != nil {
 		response.Ok = false
+		fmt.Println(`Error`)
 		return response
 		// error handling goes here e.g. network / http error
 	}
-	response = &JobTemplateResponse(result)
+	result.GetObject(&response)
 	fmt.Println(response)
 	return response
 }

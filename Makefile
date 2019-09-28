@@ -1,8 +1,8 @@
 up:
-	go run src/main.go
+	docker-compose up
 
 build:
 	docker build -t myriade/pickaxe .
 
-dev-build:
-	docker build -t myriade/pickaxe:dev .
+dev:
+	docker build -f Dockerfile.dev -t myriade/pickaxe:dev .

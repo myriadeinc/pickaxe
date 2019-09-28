@@ -1,13 +1,10 @@
 FROM golang:1.10
 
 RUN go get -u github.com/golang/dep/cmd/dep
+RUN go get -u github.com/githubnemo/CompileDaemon
 
 WORKDIR /go/src/github.com/myriadeinc/pickaxe/
 
 COPY . .
 
-RUN go get github.com/githubnemo/CompileDaemon
-
-RUN dep ensure
-
-ENTRYPOINT CompileDaemon -log-prefix=false -build="go build -o ./build/pickaxe ./src/main.go" -command="./build/pickaxe"
+ENTRYPOINT dep ensure && CompileDaemon -log-prefix=false -build="go build -o ./build/pickaxe ./src/main.go" -command="./build/pickaxe"
