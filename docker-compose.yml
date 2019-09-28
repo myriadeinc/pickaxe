@@ -1,0 +1,9 @@
+version: "2.1"
+services:
+  pickaxe:
+    image: myriade/pickaxe:dev
+    ports:
+      - 8050:8050
+      - 18050:18050
+    volumes:
+      - ./:/go/src/github.com/myriadeinc/pickaxe
