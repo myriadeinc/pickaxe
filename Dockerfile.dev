@@ -2,9 +2,10 @@ FROM golang:1.10
 
 RUN go get -u github.com/golang/dep/cmd/dep
 RUN go get -u github.com/githubnemo/CompileDaemon
+RUN go get github.com/ctrlrsf/logdna/cmd/logdna-stdin
 
 WORKDIR /go/src/github.com/myriadeinc/pickaxe/
 
 COPY . .
 
-ENTRYPOINT dep ensure && CompileDaemon -log-prefix=false -build="go build -o ./build/pickaxe ./src/main.go" -command="./build/pickaxe"
+ENTRYPOINT dep ensure && CompileDaemon -log-prefix=false -build="go build -o ./build/pickaxe ./src/main.go" -command="./build/pickaxe" | logdna-stdin --hostname myriade.local --log-file-name pickaxe.local

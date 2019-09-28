@@ -1,4 +1,4 @@
-package MoneroAPI
+package MoneroApi
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ type Request struct {
 }
 
 type JobTemplateResponse struct {
-	Ok 					 	 bool		`json:ok`
+	Ok 					 	 bool		`json:"ok"`
 	Difficulty     int64  `json:"difficulty"`
 	Height         int64  `json:"height"`
 	Blob           string `json:"blocktemplate_blob"`
@@ -19,11 +19,13 @@ type JobTemplateResponse struct {
 	PrevHash       string `json:"prev_hash"`
 }
 
-func Init(url string) (jsonrpc.RPCClient) {
-	return jsonrpc.NewClient(url)
+var rpcClient jsonrpc.RPCClient
+
+func Init(url string) () {
+	rpcClient = jsonrpc.NewClient(url)
 }
 
-func GetJobTemplate(rpcClient jsonrpc.RPCClient, reserveSize int, address string) (*JobTemplateResponse) {
+func GetJobTemplate(reserveSize int, address string) (*JobTemplateResponse) {
 	result, err := rpcClient.Call("getblocktemplate", &Request{address, reserveSize})
 	var response *JobTemplateResponse
 	if err != nil || result.Error != nil {

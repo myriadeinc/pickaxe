@@ -1,27 +1,25 @@
 package main
 
 import (
-	"fmt"
-	"github.com/ybbus/jsonrpc"
+	"os"
 	"github.com/myriadeinc/pickaxe/src/api"
 	"github.com/myriadeinc/pickaxe/src/util"
 )
 
-func initializeService() (int) {
+func initializeService() (bool) {
 	//Initialize our Logger
 	Logger.Init()
-	return 1
+	MoneroApi.Init("http://0.0.0.0:8040")
+	return true
 }
 
 func main() {
 
-	var success int = initializeService()
-	if (0 == success){
+	var success bool = initializeService()
+	if (success){
 		// Early exit
+		os.Exit(1)
 	}
 	// Starting PickAxe service
 	Logger.Logger.Info("Starting PickAxe service")
-
-	var rpcClient jsonrpc.RPCClient = MoneroAPI.Init("http://0.0.0.0:8040")
-	fmt.Println(rpcClient)
 }

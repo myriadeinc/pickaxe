@@ -3,6 +3,14 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:46d9164a373b80f291a4bd9d232c225b863129d8976a941f97daff03b3565fc2"
+  name = "github.com/Kairi/godash"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "402b6c21bf2332a372e83e64b5ce546f1be510ef"
+
+[[projects]]
+  branch = "master"
   digest = "1:71dacf71b3d9cdad5751d42650197769efb31eaa64d8129e03f7182bdace7d65"
   name = "github.com/bhoriuchi/go-bunyan"
   packages = ["bunyan"]
@@ -21,6 +29,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/Kairi/godash",
     "github.com/bhoriuchi/go-bunyan/bunyan",
     "github.com/ybbus/jsonrpc",
   ]
