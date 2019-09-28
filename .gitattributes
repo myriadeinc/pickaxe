@@ -1,1 +1,4 @@
 Makefile linguist-generated=true
+Dockerfile linguist-generated=true
+Dockerfile.dev linguist-generated=true
+docker-compose.yml linguist-generated=true
