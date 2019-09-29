@@ -1,4 +1,4 @@
-package Logger
+package LoggerUtil
 
 import (
 	"os"

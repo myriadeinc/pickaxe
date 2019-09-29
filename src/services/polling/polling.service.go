@@ -1,4 +1,4 @@
-package Services
+package PollingServices
 
 import (
 	"fmt"
