@@ -4,28 +4,27 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 	"path/filepath"
 	"runtime"
-	"strings"
-	"github.com/tkanos/gonfig"
+	"github.com/spf13/viper"
 )
 
-type Configuration struct {
-	Service__name								string 	`env:"service__name"`
-	Service__host								string	`env:"service__host"`
-	Service__shared_secret			string	`env:"service__shared_secret"`
+func Init() {
+
+	replacer := strings.NewReplacer(".", "__")
+	viper.SetEnvKeyReplacer(replacer)
+
+	viper.AutomaticEnv()
+	viper.SetConfigName("local")
+	viper.AddConfigPath("./config/")
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Println("Error reading config file, %s", err)
+	}
 }
 
-var Config 	*Configuration
-
-func Init() {
-	Config = &Configuration{}
-
-	err := gonfig.GetConf(getFileName(), Config)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(500)
-	}
+func Get(key string) (interface{}){
+	return viper.Get(key)
 }
 
 func getFileName() string {
@@ -33,7 +32,7 @@ func getFileName() string {
 	if len(env) == 0 {
 		env = "local"
 	}
-	filename := []string{"../../../config/", "config.", env, ".json"}
+	filename := []string{"../../../config/", "config.", env, ".yml"}
 	_, dirname, _, _ := runtime.Caller(0)
 	filePath := path.Join(filepath.Dir(dirname), strings.Join(filename, ""))
 	return filePath

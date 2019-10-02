@@ -32,8 +32,9 @@ func main() {
 		fmt.Println("Failure, early exit")
 		os.Exit(1)
 	}
+
 	// Starting PickAxe service
-	LoggerUtil.Logger.Info("Starting PickAxe service")
+	LoggerUtil.Logger.Info("Starting %s service", ConfigUtil.Get("service.name"))
 	var router *mux.Router = mux.NewRouter()
 	router.HandleFunc("/healthcheck", healthcheck)
 	var apiRouter *mux.Router = router.PathPrefix("/api/v1").Subrouter()
