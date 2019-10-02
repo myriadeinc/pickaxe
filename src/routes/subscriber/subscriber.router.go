@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/myriadeinc/pickaxe/src/util/logger"
+	"github.com/myriadeinc/pickaxe/src/middleware/authentication"
 	"github.com/myriadeinc/pickaxe/src/services/subscriber"
 )
 
@@ -13,7 +14,10 @@ type SubscribeRequest struct {
 	Hostname 	*string	`json:"hostname"`
 }
 
+
+
 func subscriptionHandler (res http.ResponseWriter, req *http.Request) {
+
 	// Performs a Request decoding + validation for fields and types
 	decoder := json.NewDecoder(req.Body)
 	decoder.DisallowUnknownFields()
@@ -38,6 +42,8 @@ func subscriptionHandler (res http.ResponseWriter, req *http.Request) {
 
 func Register(router *mux.Router) {
 	var subscriberRouter *mux.Router = router.PathPrefix("/subscribe").Subrouter()
-	subscriberRouter.HandleFunc("/", subscriptionHandler).Methods("POST")
+	//router.PathPrefix("/").Handle(AuthentcationMiddleware.Authenticate()(http.HandlerFunc(subscriptionHandler)))
+	subscriberRouter.Handle("/",AuthentcationMiddleware.Authenticate()(http.HandlerFunc(subscriptionHandler))).Methods("POST")
+
 	LoggerUtil.Logger.Info("Register Subscriber Router")
 }
