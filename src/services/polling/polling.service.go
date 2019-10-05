@@ -57,7 +57,7 @@ func (t *TemplateFetcher) run() {
 
 
 func start() {
-	tf := TemplateFetcher.GetInstance()
+	var tf *TemplateFetcher = TemplateFetcher.GetInstance()
 	go tf.run()
 }
 
