@@ -3,13 +3,18 @@ package PollingServices
 import (
 	"fmt"
 	"time"
+	"github.com/myriadeinc/pickaxe/src/api/monero"
+	""
 )
+
 /**
 *
 *
+@Documentation
+Move this text here in a later build
 camelCase -> private fields
 PascalCase -> Packages, or public methods
-snake_case -> 
+snake_case ->
 kebab-case -> don't use
 *
 */
@@ -17,52 +22,44 @@ kebab-case -> don't use
 var lastBlockHeight uint64
 
 type TemplateFetcher struct {
-	Ticker 			*time.Ticker
-	BlockHeight		uint64
+	Ticker      *time.Ticker
+	BlockHeight uint64
+	MoneroApi // Instance of monero api connection
 }
 
-type blockTemplate struct {
-	
+
+
+var singleton TemplateFetcher
+
+var once sync.Oncefunc GetInstance() *TemplateFetcher {
+    once.Do(func() {
+		// Instatiate the TemplateFetcher and Monero API
+        singleton = &TemplateFetcher{
+			Ticker time.Ticker()
+			BlockHeight uint64
+			}
+    })
+	return singleton
 }
 
-func (t *templateFetcher) run() {
-	fmt.Println("Run called")
-}
-
-func (t *TemplateFetcher) NewTemplateFetcher (){ 
-	var tf *templateFetcher = &templateFetcher{
-		time.NewTicker(2000 * time.Millisecond),
-		currentHeight,
+func (t *TemplateFetcher) run() {
+	for {
+		select {
+		case <-t.Ticker.C:
+			fmt.Println("call GetJobTemplate here")
+			MoneroApi.GetJobTemplate()
+			// TODO: Add notify subscriber after checking blockheight
+		}
 	}
-	return tf
-	// go tf.run()
-} 
+}
 
 
+func start() {
+	tf := TemplateFetcher.GetInstance()
+	go tf.run()
+}
 
-// func Start() {
-//     ticker := time.NewTicker(500 * time.Millisecond)
-//     done := make(chan bool)
-//     go func() {
-//         for {
-//             select {
-//             case <-done:
-//                 return
-//             case t := <-ticker.C:
-//                 fmt.Println("Tick at", t)
-//             }
-//         }
-//     }()
+func stop(){
 
-//     time.Sleep(1600 * time.Millisecond)
-//     ticker.Stop()
-//     done <- true
-//     fmt.Println("Ticker stopped")
-// }
 
-func processLatestBlock(newBlockHeight uint64, newBlockTemplate blockTemplate) {
-	if (newBlockHeight > lastBlockHeight){
-		lastBlockHeight = newBlockHeight
-			
-	}
 }
