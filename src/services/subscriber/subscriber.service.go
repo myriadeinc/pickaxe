@@ -1,5 +1,7 @@
 package SubscriberService
 
+import "fmt"
+
 type Subscriber struct {
 	Webhook		string
 }
@@ -12,7 +14,8 @@ func Subscribe(webhook string) {
 	subscribers = append(subscribers, &Subscriber{webhook})
 }
 
-func Notify(notifyFn func(Subscriber)) {
+func Notify(notifyFn func(subscriber Subscriber)) {
+	fmt.Println(subscribers)
 	for _, subscriber := range subscribers{
 		notifyFn(*subscriber)
 	}

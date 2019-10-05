@@ -8,13 +8,15 @@ import (
 
 type Request struct {
 	Wallet_Address 	string `json:"wallet_address"`
-	Reserve_Size		int		 `json:"reserve_size"`
+	Reserve_Size		uint16		 `json:"reserve_size"`
 }
+
+var debug bool = false
 
 type JobTemplateResponse struct {
 	Ok 					 	 bool		`json:"ok"`
-	Difficulty     int64  `json:"difficulty"`
-	Height         int64  `json:"height"`
+	Difficulty     uint64  `json:"difficulty"`
+	Height         uint64  `json:"height"`
 	Blob           string `json:"blocktemplate_blob"`
 	ReservedOffset int    `json:"reserved_offset"`
 	PrevHash       string `json:"prev_hash"`
@@ -22,11 +24,15 @@ type JobTemplateResponse struct {
 
 var rpcClient jsonrpc.RPCClient
 
-func Init(url string) () {
+func Init(url string, debugMode bool) () {
+	debug = debugMode
 	rpcClient = jsonrpc.NewClient(url)
 }
 
-func GetJobTemplate(reserveSize int, address string) (*JobTemplateResponse) {
+func GetJobTemplate(reserveSize uint16, address string) (*JobTemplateResponse) {
+	if (debug) {
+		return fakeNewJobTemplate()
+	}
 	result, err := rpcClient.Call("getblocktemplate", &Request{address, reserveSize})
 	var response *JobTemplateResponse
 	if err != nil || result.Error != nil {
@@ -39,4 +45,22 @@ func GetJobTemplate(reserveSize int, address string) (*JobTemplateResponse) {
 
 	LoggerUtil.Logger.Info(response)
 	return response
+}
+
+func GetFakeBlockHeight() uint64 {
+	var number uint64 = 90
+	return number
+}
+
+
+func fakeNewJobTemplate() (*JobTemplateResponse) {
+	fmt.Println("Querying monero API")
+	return &JobTemplateResponse{
+		Ok: true,		 	
+		Difficulty: 10000,
+		Height: 100,         
+		Blob: "heyeheyeyeyhe",        
+		ReservedOffset: 120,
+		PrevHash: "c82411b6b6ac",       
+	}
 }
