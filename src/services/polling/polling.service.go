@@ -31,7 +31,9 @@ type TemplateFetcher struct {
 
 var singleton TemplateFetcher
 
-var once sync.Oncefunc GetInstance() *TemplateFetcher {
+var once sync.Once
+
+func GetInstance() *TemplateFetcher {
     once.Do(func() {
 		// Instatiate the TemplateFetcher and Monero API
         singleton = &TemplateFetcher{

@@ -1,33 +1,32 @@
 package main
 
 import (
-	"os"
-	"net/http"
 	"fmt"
 	"log"
+	"net/http"
+	"os"
+
 	"github.com/gorilla/mux"
-	"github.com/myriadeinc/pickaxe/src/api/monero"
-	"github.com/myriadeinc/pickaxe/src/util/logger"
-	"github.com/myriadeinc/pickaxe/src/util/config"
-	"github.com/myriadeinc/pickaxe/src/routes/subscriber"
 )
 
 func healthcheck(res http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(res, "OK")
 }
 
-func initializeService() (bool) {
+func initializeService() bool {
 	//Initialize our Logger
 	LoggerUtil.Init()
 	ConfigUtil.Init()
 	MoneroApi.Init("http://0.0.0.0:8040")
+	// Allow polling service to connect to monero api instead?
+	PollingService.start()
 	return true
 }
 
 func main() {
 
 	var success bool = initializeService()
-	if (!success){
+	if !success {
 		// Early exit
 		fmt.Println("Failure, early exit")
 		os.Exit(1)
