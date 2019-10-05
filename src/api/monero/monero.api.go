@@ -1,9 +1,9 @@
-package Apis
+package MoneroApi
 
 import (
 	"fmt"
 	"github.com/ybbus/jsonrpc"
-	"github.com/myriadeinc/pickaxe/src/util"
+	"github.com/myriadeinc/pickaxe/src/util/logger"
 )
 
 type Request struct {
@@ -37,6 +37,6 @@ func GetJobTemplate(reserveSize int, address string) (*JobTemplateResponse) {
 	}
 	result.GetObject(&response)
 
-	Logger.Logger.Info(response)
+	LoggerUtil.Logger.Info(response)
 	return response
 }

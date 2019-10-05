@@ -6,21 +6,21 @@ import (
 	"fmt"
 	"log"
 	"github.com/gorilla/mux"
-	"github.com/myriadeinc/pickaxe/src/api"
-	"github.com/myriadeinc/pickaxe/src/util"
-	"github.com/myriadeinc/pickaxe/src/routes"
-	"github.com/myriadeinc/pickaxe/src/services"
+	"github.com/myriadeinc/pickaxe/src/api/monero"
+	"github.com/myriadeinc/pickaxe/src/util/logger"
+	"github.com/myriadeinc/pickaxe/src/util/config"
+	"github.com/myriadeinc/pickaxe/src/routes/subscriber"
 )
 
 func healthcheck(res http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(res, "OK")
-	var coolThing := Services.NewTemplateFetcher(9000)
 }
 
 func initializeService() (bool) {
 	//Initialize our Logger
-	Logger.Init()
-	Apis.Init("http://0.0.0.0:8040")
+	LoggerUtil.Init()
+	ConfigUtil.Init()
+	MoneroApi.Init("http://0.0.0.0:8040")
 	return true
 }
 
@@ -32,14 +32,12 @@ func main() {
 		fmt.Println("Failure, early exit")
 		os.Exit(1)
 	}
+
 	// Starting PickAxe service
-	Logger.Logger.Info("Starting PickAxe service")
+	LoggerUtil.Logger.Info("Starting %s service", ConfigUtil.Get("service.name"))
 	var router *mux.Router = mux.NewRouter()
 	router.HandleFunc("/healthcheck", healthcheck)
-	var apiRouter *mux.Router = router.Host("/api/v1").Subrouter()
+	var apiRouter *mux.Router = router.PathPrefix("/api/v1").Subrouter()
 	SubscriberRouter.Register(apiRouter)
 	log.Fatal(http.ListenAndServe(":8050", router))
-
-
-	
 }
