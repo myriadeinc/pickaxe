@@ -7,6 +7,7 @@ import (
 	"github.com/myriadeinc/pickaxe/src/api/monero"
 	"github.com/myriadeinc/pickaxe/src/services/subscriber"
 	"github.com/myriadeinc/pickaxe/src/util/config"
+	"github.com/myriadeinc/pickaxe/src/util/logger"
 )
 
 
@@ -37,11 +38,11 @@ func (t *TemplateFetcher) run() {
 	for {
 		select {
 		case <-t.Ticker.C:
-			fmt.Println("Ticker called")
-			fmt.Println(*t)
+			// fmt.Println("Ticker called")
+			// fmt.Println(*t)
 			var jobTemplate *MoneroApi.JobTemplateResponse 			
 			jobTemplate = MoneroApi.GetJobTemplate(8, ConfigUtil.Get("pool.wallet_address").(string))
-			fmt.Println(t.BlockHeight, jobTemplate.Height)
+			// fmt.Println(t.BlockHeight, jobTemplate.Height)
 			// @TODO: Compare prevHash field first (in later build)
 			if (t.BlockHeight < jobTemplate.Height) {
 				SubscriberService.Notify(func (subscriber SubscriberService.Subscriber) {
@@ -63,7 +64,7 @@ func Init() {
 }
 
 func Shutdown(){
-	LoggerUtil.Logger.Info("Shutting down TemplateFetching Service"))	
+	LoggerUtil.Logger.Info("Shutting down TemplateFetching Service")
 	var tf *TemplateFetcher = GetInstance()
 	tf.Ticker.Stop()
 }

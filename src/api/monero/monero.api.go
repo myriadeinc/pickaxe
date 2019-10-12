@@ -54,7 +54,7 @@ func GetFakeBlockHeight() uint64 {
 
 
 func fakeNewJobTemplate() (*JobTemplateResponse) {
-	fmt.Println("Querying monero API")
+	// fmt.Println("Querying monero API")
 	return &JobTemplateResponse{
 		Ok: true,		 	
 		Difficulty: 10000,
