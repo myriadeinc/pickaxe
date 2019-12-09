@@ -34,7 +34,27 @@ func GetJobTemplate(reserveSize int, address string) (*JobTemplateResponse) {
     err := rpcClient.CallFor(&jobTemplateResponse, "get_block_template", &Request{address, reserveSize})
     if err != nil || jobTemplateResponse == nil {
 		LoggerUtil.Logger.Error(err.Error())
-		panic("Bad response from Monero Node! Shutting down")
+		return getGenesisBlockTemplate()
 	}
 	return jobTemplateResponse
+}
+
+func getGenesisBlockTemplate() (*JobTemplateResponse) {
+	var Blob 			string = "0000000000000000000000000000000000000000000000000000000000000000"
+	var ReservedOffset  uint64 = 0
+	var Difficulty      uint64 = 1
+	var Height          uint64 = 0
+	var ExpectedReward  uint64 = 0
+	var SeedHash		string = "0000000000000000000000000000000000000000000000000000000000000000"
+	var PrevHash        string = "0000000000000000000000000000000000000000000000000000000000000000"
+	return &JobTemplateResponse{
+		Blob            : &Blob,
+		ReservedOffset  : &ReservedOffset,
+		Difficulty      : &Difficulty,
+		Height          : &Height,
+		ExpectedReward  : &ExpectedReward,
+		SeedHash		: &SeedHash,
+		PrevHash        : &PrevHash,
+	}
+
 }
