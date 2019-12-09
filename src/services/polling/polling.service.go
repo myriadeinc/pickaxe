@@ -1,13 +1,14 @@
 package PollingService
 
 import (
-	"fmt"
 	"time"
 	"sync"
 	"github.com/myriadeinc/pickaxe/src/api/monero"
 	"github.com/myriadeinc/pickaxe/src/services/subscriber"
 	"github.com/myriadeinc/pickaxe/src/util/config"
 	"github.com/myriadeinc/pickaxe/src/util/logger"
+	"encoding/json"
+	"bytes"
 )
 
 
@@ -24,7 +25,7 @@ func GetInstance() *TemplateFetcher {
 			singleton = &TemplateFetcher{
 			// Every 2 seconds
 				Ticker: time.NewTicker(2000 * time.Millisecond),
-				BlockHeight: 100,
+				BlockHeight: 1,
 			}
     })
 	return singleton
@@ -38,28 +39,36 @@ func (t *TemplateFetcher) run() {
 	for {
 		select {
 		case <-t.Ticker.C:
-			// fmt.Println("Ticker called")
-			// fmt.Println(*t)
-			var jobTemplate *MoneroApi.JobTemplateResponse 			
+			var jobTemplate *MoneroApi.JobTemplateResponse
+			//"Blocktemplate:  %v", ConfigUtil.Get("pool.wallet_address").(string))
 			jobTemplate = MoneroApi.GetJobTemplate(8, ConfigUtil.Get("pool.wallet_address").(string))
-			// fmt.Println(t.BlockHeight, jobTemplate.Height)
+			jobPayload, err := json.Marshal(jobTemplate)
+			if err != nil {
+				LoggerUtil.Logger.Error("Critical json marshal error!", err.Error())
+				panic("Bad marshaling")
+			} 	
+			if(*jobTemplate.Height > t.BlockHeight){
 			// @TODO: Compare prevHash field first (in later build)
-			if (t.BlockHeight < jobTemplate.Height) {
 				SubscriberService.Notify(func (subscriber SubscriberService.Subscriber) {
-					fmt.Println("Notifying subscriber")
-					fmt.Println(subscriber)
-				})	
-				t.setBlockHeight(jobTemplate.Height)
+					// If needed check return statement for tracking faulty subscribers
+					go SubscriberService.SendRequest(bytes.NewBuffer(jobPayload),subscriber)
+					})
+				t.setBlockHeight(*jobTemplate.Height)
+				}
+
 			}
 		}
-	}
 }
 
+
+
+// rc/services/polling/polling.service.go:54:6: syntax error: unexpected newline, expecting comma or )
+// pickaxe_1   | src/services/polling/polling.service.go:56:5: syntax error: unexpected ) at end of statement
+// pickaxe_1   | src/services/polling/polling.service.go:61:1: syntax error: non-declaration statement outside function body
 
 func Init() {
 	MoneroApi.Init(ConfigUtil.Get("pool.monero_url").(string), true)
 	var tf *TemplateFetcher = GetInstance()
-	tf.setBlockHeight(MoneroApi.GetJobTemplate(8,ConfigUtil.Get("pool.wallet_address").(string)).Height)
 	go tf.run()
 }
 
