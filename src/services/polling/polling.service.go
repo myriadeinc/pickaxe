@@ -60,12 +60,6 @@ func (t *TemplateFetcher) run() {
 		}
 }
 
-
-
-// rc/services/polling/polling.service.go:54:6: syntax error: unexpected newline, expecting comma or )
-// pickaxe_1   | src/services/polling/polling.service.go:56:5: syntax error: unexpected ) at end of statement
-// pickaxe_1   | src/services/polling/polling.service.go:61:1: syntax error: non-declaration statement outside function body
-
 func Init() {
 	MoneroApi.Init(ConfigUtil.Get("pool.monero_url").(string), true)
 	var tf *TemplateFetcher = GetInstance()
