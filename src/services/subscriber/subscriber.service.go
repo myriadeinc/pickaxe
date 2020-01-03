@@ -22,8 +22,9 @@ func Subscribe(webhook string) {
 }
 
 func Notify(notifyFn func(subscriber Subscriber)) {
-	fmt.Println(subscribers)
+	LoggerUtil.Logger.Info("New template update");
 	for _, subscriber := range subscribers{
+		LoggerUtil.Logger.Info("Notifying subscriber " + subscriber.Webhook)
 		notifyFn(*subscriber)
 	}
 }
@@ -31,8 +32,7 @@ func Notify(notifyFn func(subscriber Subscriber)) {
 func SendRequest(data io.Reader, subscriber Subscriber) bool {
 
 	req, err := http.NewRequest("POST", subscriber.Webhook, data)
-
-	req.Header.Add("Authorization", ConfigUtil.Get("service.shared_secret").(string) ) 
+	req.Header.Add("Authorization", "shared_secret " + ConfigUtil.Get("SERVICE.SHARED_SECRET").(string) ) 
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}
