@@ -13,7 +13,8 @@ type Request struct {
 var debug bool = false
 
 type JobTemplateResponse struct {
-	Blob            *string  `json:"blocktemplate_blob"`
+	Blocktemplate_blob            *string  `json:"blocktemplate_blob"`
+	Blockhashing_blob            *string  `json:"blockhashing_blob"`
 	ReservedOffset  *uint64  `json:"reserved_offset"`
 	Difficulty      *uint64  `json:"difficulty"`
 	Height          *uint64  `json:"height"`
@@ -48,7 +49,8 @@ func getGenesisBlockTemplate() (*JobTemplateResponse) {
 	var SeedHash		string = "0000000000000000000000000000000000000000000000000000000000000000"
 	var PrevHash        string = "0000000000000000000000000000000000000000000000000000000000000000"
 	return &JobTemplateResponse{
-		Blob            : &Blob,
+		Blocktemplate_blob : &Blob,
+		Blockhashing_blob  : &Blob,
 		ReservedOffset  : &ReservedOffset,
 		Difficulty      : &Difficulty,
 		Height          : &Height,

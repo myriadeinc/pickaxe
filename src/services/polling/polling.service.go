@@ -41,7 +41,9 @@ func (t *TemplateFetcher) run() {
 		case <-t.Ticker.C:
 			var jobTemplate *MoneroApi.JobTemplateResponse
 			//"Blocktemplate:  %v", ConfigUtil.Get("pool.wallet_address").(string))
-			jobTemplate = MoneroApi.GetJobTemplate(8, ConfigUtil.Get("pool.wallet_address").(string))
+			//jobTemplate = MoneroApi.GetJobTemplate(8, ConfigUtil.Get("pool.wallet_address").(string))
+			jobTemplate = MoneroApi.GetJobTemplate(0, "47PAULmUFo3DPHKehGPuxXbEAB4JkRYJ49DEFs4EqaT7M2TRqqWWHAeJyEHWg8eRoWNwMAHh7bx6Eh5SR2fpdnj71fhxugC")
+			
 			jobPayload, err := json.Marshal(jobTemplate)
 			if err != nil {
 				LoggerUtil.Logger.Error("Critical json marshal error!", err.Error())
