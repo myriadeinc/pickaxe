@@ -13,14 +13,14 @@ type Request struct {
 var debug bool = false
 
 type JobTemplateResponse struct {
-	Blocktemplate_blob            *string  `json:"blocktemplate_blob"`
-	Blockhashing_blob            *string  `json:"blockhashing_blob"`
-	ReservedOffset  *uint64  `json:"reserved_offset"`
-	Difficulty      *uint64  `json:"difficulty"`
-	Height          *uint64  `json:"height"`
-	ExpectedReward  *uint64  `json:"expected_reward"`
-	SeedHash		*string  `json:"seed_hash"`
-	PrevHash        *string  `json:"prev_hash"`
+	Blocktemplate_blob  *string  `json:"blocktemplate_blob"`
+	Blockhashing_blob   *string  `json:"blockhashing_blob"`
+	ReservedOffset  	*uint64  `json:"reserved_offset"`
+	Difficulty      	*uint64  `json:"difficulty"`
+	Height          	*uint64  `json:"height"`
+	ExpectedReward  	*uint64  `json:"expected_reward"`
+	SeedHash			*string  `json:"seed_hash"`
+	PrevHash        	*string  `json:"prev_hash"`
 }
 
 var rpcClient jsonrpc.RPCClient

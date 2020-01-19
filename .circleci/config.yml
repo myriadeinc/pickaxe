@@ -1,0 +1,34 @@
+version: 2
+jobs:
+  build:
+    docker:
+      # Primary
+      - image: circleci/golang:1.10
+        environment:
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 18.06.0-ce
+      - run:
+          name: Check dependencies
+          command: |
+            go get -u github.com/golang/dep/cmd/dep
+      - run:
+          name: Run Tests
+          command: |
+            dep ensure
+      - run:
+          name: Rebuild production dependencies
+          command: |
+            go build -o build/pickaxe
+      - run:
+          name: Build Docker image
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            TAG=$(git show -s --pretty=%H) make build
+      - deploy:
+          name: Push & deploy build
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              docker push myriadeinc/pickaxe:$(git show -s --pretty=%H)
+            fi
