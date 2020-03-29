@@ -4,6 +4,7 @@ import (
 	"strings"
 	"net/http"
 	"github.com/myriadeinc/pickaxe/src/util/config"
+	"github.com/myriadeinc/pickaxe/src/util/logger"
 )
 
 type Decorator func(http.Handler) http.Handler
@@ -16,7 +17,9 @@ func Authenticate() Decorator {
 				h.ServeHTTP(res, req)
 				return
 			}
-			http.Error(res, "Not Found", 404)
+			LoggerUtil.Logger.Error("Authentication Error: %s \n", req.Header.Get("Authorization"))	
+
+			http.Error(res, "Paige Not Found", 404)
 		})
 	}
 }
