@@ -13,7 +13,7 @@ import (
 )
 
 func healthcheck(res http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(res, "OK")
+	fmt.Fprintf(res, "Pickaxe OK")
 }
 
 func initializeService() (bool) {
