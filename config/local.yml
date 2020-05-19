@@ -2,6 +2,7 @@ SERVICE:
   NAME: pickaxe
   HOST: https://0.0.0.0:8050
   SHARED_SECRET: "__REPLACE__"
+  DEBUG: 1
 POOL:
   WALLET_ADDRESS: "47PAULmUFo3DPHKehGPuxXbEAB4JkRYJ49DEFs4EqaT7M2TRqqWWHAeJyEHWg8eRoWNwMAHh7bx6Eh5SR2fpdnj71fhxugC"
   MONERO_URL: "http://daemon.myriade.io/json_rpc"

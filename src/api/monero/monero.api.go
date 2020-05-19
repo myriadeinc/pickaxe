@@ -38,7 +38,7 @@ func GetJobTemplate(reserveSize int, address string) (*JobTemplateResponse) {
 	}
 	return jobTemplateResponse
 }
-
+// With a genesis block template we can at least generate a job for emerald, an invalid job will provide a clearer error trace
 func getGenesisBlockTemplate() (*JobTemplateResponse) {
 	var Blob 			string = "0000000000000000000000000000000000000000000000000000000000000000"
 	var ReservedOffset  uint64 = 0

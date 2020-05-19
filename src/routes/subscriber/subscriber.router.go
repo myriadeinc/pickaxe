@@ -42,7 +42,6 @@ func subscriptionHandler (res http.ResponseWriter, req *http.Request) {
 
 func Register(router *mux.Router) {
 	var subscriberRouter *mux.Router = router.PathPrefix("/subscribe").Subrouter()
-	//router.PathPrefix("/").Handle(AuthentcationMiddleware.Authenticate()(http.HandlerFunc(subscriptionHandler)))
 	subscriberRouter.Handle("/",AuthentcationMiddleware.Authenticate()(http.HandlerFunc(subscriptionHandler))).Methods("POST")
 
 	LoggerUtil.Logger.Info("Register Subscriber Router")
