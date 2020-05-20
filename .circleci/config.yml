@@ -1,0 +1,22 @@
+version: 2
+jobs:
+    build:
+        docker:
+            - image: cirecleci/golang:1.14
+        environment:
+            SHARED_SECRET: __REPLACE__
+        steps:
+            - checkout
+            - setup_remote_docker:
+                version: 18.06.0-ce
+            - run:
+                name: Build Docker image
+                command: |
+                      echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+                      TAG=$(git show -s --pretty=%H) make build
+            - deploy:
+                name: Push & deploy build
+                command: |
+                      if [ "${CIRCLE_BRANCH}" == "master" ]; then
+                        docker push myriadeinc/pickaxe:$(git show -s --pretty=%H)
+                      fi
