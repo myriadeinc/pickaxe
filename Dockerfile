@@ -1,12 +1,12 @@
-FROM golang:1.14.3
-RUN go get -u github.com/golang/dep/cmd/dep
+FROM golang:1.16.5-buster
+WORKDIR /pickaxe
+COPY . /pickaxe
+RUN useradd gouser --home /pickaxe --uid 1000 
+# Home directory for managing go imports
+RUN chown -R gouser:gouser /pickaxe
 
-WORKDIR /go/src/github.com/myriadeinc/pickaxe/
+USER gouser
+RUN go mod download
+RUN go build -o ./pickaxe cmd/pickaxe/pickaxe.go
 
-COPY . .
-
-RUN dep ensure
-
-RUN go build -o build/pickaxe
-
-ENTRYPOINT [ "./build/pickaxe" ]
+CMD ["/pickaxe/pickaxe"]
