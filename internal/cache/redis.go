@@ -3,6 +3,8 @@ package cache
 import (
 	"context"
 
+	"github.com/spf13/viper"
+
 	"github.com/go-redis/redis/v8"
 )
 
@@ -17,7 +19,7 @@ type RedisService struct {
 func NewClient() CacheService {
 
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     viper.GetString("REDIS_URL"),
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})

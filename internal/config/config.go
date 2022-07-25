@@ -9,5 +9,6 @@ func DefaultConfigs() {
 	viper.SetDefault("WEBHOOK_URL", "http://zircon:4990/new")
 	viper.SetDefault("WALLET_ADDRESS", "47PAULmUFo3DPHKehGPuxXbEAB4JkRYJ49DEFs4EqaT7M2TRqqWWHAeJyEHWg8eRoWNwMAHh7bx6Eh5SR2fpdnj71fhxugC")
 	viper.SetDefault("RESERVE_OFFSET", 8)
+	viper.SetDefault("REDIS_URL", "redis://cache:6379")
 
 }
