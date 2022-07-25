@@ -20,7 +20,8 @@ func NewPoller() Poller {
 	nodes := []string{"https://node.monerod.org/json_rpc"}
 
 	client := nodeapi.NewNodeClient(nodes)
-	cache := cache.NewDummyClient()
+	// cache := cache.NewDummyClient()
+	cache := cache.NewClient()
 
 	return Poller{
 		client:      client,
