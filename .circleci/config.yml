@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  docker: circleci/docker@2.0.1
+  docker: circleci/docker@2.1.2
 
 jobs:
   test:
@@ -30,7 +30,7 @@ workflows:
       - docker/publish:
           requires:
             - test
-          image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+          image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
           filters:
             branches:
               only: 
