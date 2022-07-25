@@ -42,24 +42,26 @@ func (p *Poller) PollForever() {
 
 		height := uint64(template["height"].(float64))
 
-		if height <= p.blockHeight {
-			time.Sleep(10 * time.Second)
-			log.Debug().Uint64("height", height).Uint64("pollerheight", height).Msg("skipping lower height")
-			continue
-		}
-
-		log.Info().Uint64("height", height).Msg("new blockheight detected")
-		p.blockHeight = height
+		// Test saving always to stay fresh
+		// if height <= p.blockHeight {
+		// 	time.Sleep(10 * time.Second)
+		// 	log.Debug().Uint64("height", height).Uint64("pollerheight", height).Msg("skipping lower height")
+		// 	continue
+		// }
 
 		err := p.cache.SaveNewTemplate(template)
 		if err != nil {
 			log.Error().Err(err).Msg("could not save newtemplate")
-			time.Sleep(100 * time.Second)
+			time.Sleep(10 * time.Second)
 			continue
 		}
 		log.Info().Msg("Saved new blocktemplate")
-		// Fire and forget
-		updater.UpdateWebhooks()
+		if height > p.blockHeight {
+			log.Info().Uint64("height", height).Msg("new blockheight detected")
+			p.blockHeight = height
+			// Fire and forget
+			updater.UpdateWebhooks()
+		}
 
 		time.Sleep(10 * time.Second)
 
