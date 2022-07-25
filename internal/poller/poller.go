@@ -7,6 +7,7 @@ import (
 
 	"github.com/myriadeinc/pickaxe/internal/cache"
 	"github.com/myriadeinc/pickaxe/internal/nodeapi"
+	"github.com/myriadeinc/pickaxe/internal/updater"
 )
 
 type Poller struct {
@@ -56,6 +57,8 @@ func (p *Poller) PollForever() {
 			continue
 		}
 		log.Info().Msg("Saved new blocktemplate")
+		// Fire and forget
+		updater.UpdateWebhooks()
 
 		time.Sleep(10 * time.Second)
 
